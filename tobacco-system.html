@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/kanmile/">
+    <title>康迈乐烟草行业信息管理系统</title>
+    <style>
+        :root {
+            --dark-green: #1e5631;
+            --medium-green: #2e7d32;
+            --light-green: #4caf50;
+            --very-light-green: #c8e6c9;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-light: #f5f5f5;
+            --border-color: #dddddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: var(--dark-green);
+            color: var(--text-light);
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--medium-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            background-color: var(--medium-green);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .nav-list {
+            list-style: none;
+            display: flex;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: block;
+            color: var(--text-light);
+            padding: 15px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--dark-green);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .sub-menu {
+            list-style: none;
+        }
+        
+        .sub-menu-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sub-menu-link {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .sub-menu-link:hover {
+            background-color: var(--very-light-green);
+            color: var(--dark-green);
+        }
+        
+        /* 二级子菜单 */
+        .sub-sub-menu {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .sub-menu-item:hover .sub-sub-menu {
+            display: block;
+        }
+        
+        /* 主要内容区样式 */
+        .main-content {
+            padding: 30px 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            color: var(--dark-green);
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .card-content ul {
+            list-style: none;
+            margin-left: 10px;
+        }
+        
+        .card-content li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .card-content li:before {
+            content: "•";
+            color: var(--medium-green);
+            position: absolute;
+            left: 0;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--dark-green);
+            color: var(--text-light);
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-section a {
+            color: var(--very-light-green);
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">康迈乐烟草行业信息管理系统</div>
+            <div class="user-info">
+                <span>欢迎，管理员</span>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 导航栏 -->
+    <nav>
+        <div class="container nav-container">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/子网页网页/首页.html" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/二层子网页/销售管理.html" class="nav-link">销售管理</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/客户资源管理.html" class="sub-menu-link">客户资源管理</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="D:\AI开发软件\小吴\子网页网页\客户档案标准化采集方案.html" class="sub-menu-link">客户档案标准化采集</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/客户需求动态更新方案.html" class="sub-menu-link">客户需求动态更新</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/客户分级与差异化服务方案.html" class="sub-menu-link">客户分级与差异化服务</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/客户档案加密机制方案.html" class="sub-menu-link">客户档案加密机制</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/销售数据分析.html" class="sub-menu-link">销售数据分析</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/客户关系实时动态评估方案.html" class="sub-menu-link">客户关系实时动态评估</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/反商业贿赂与保密协议.html" class="sub-menu-link">反商业贿赂与保密协议</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="D:\AI开发软件\小吴\二层子网页\采购运营.html" class="nav-link">采购运营</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/供应商管理.html" class="sub-menu-link">供应商管理</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/供应商准入与审核管理方案.html" class="sub-menu-link">供应商准入与审核</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/供应商动态考核与熔断机制.html" class="sub-menu-link">动态考核与熔断机制</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/智能化供应商现场审核系统：三维沙盘模拟与动态考核平台.html" class="sub-menu-link">现场审核流程与动态考核指标</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/高风险供应商管理措施方案.html" class="sub-menu-link">高风险供应商管理措施</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="D:\AI开发软件\小吴\二层子网页\供应链协同.html" class="sub-menu-link">供应链协同</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/数据共享平台对接方案.html" class="sub-menu-link">数据共享平台对接</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/ESG供应商筛查解决方案.html" class="sub-menu-link">ESG供应商筛查</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/二层子网页/产品中心.html" class="nav-link">产品中心</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/产品矩阵展示.html" class="sub-menu-link">产品矩阵展示</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/产品对比与选型工具方案%20.html" class="sub-menu-link">产品对比与选型工具</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/技术参数与工艺适配方案.html" class="sub-menu-link">技术参数与工艺适配</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/定制化产品咨询与设计服务方案.html" class="sub-menu-link">定制化产品咨询与设计服务</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/节能减排与绿色发展报告.html" class="sub-menu-link">节能减排与认证文件</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/产品迭代改进.html" class="sub-menu-link">产品迭代与改进</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/模块化改造创新方案.html" class="sub-menu-link">模块化改造案例</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/产品迭代日志与测试数据分析仪表盘.html" class="sub-menu-link">迭代日志与测试数据</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/二层子网页/财务管控.html" class="nav-link">成本与财务管控</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/成本核算管理.html" class="sub-menu-link">成本核算与管理</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/全生命周期成本核算方案.html" class="sub-menu-link">全生命周期成本核算</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/账期管理.html" class="sub-menu-link">账期管理与预警机制</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/成本分摊模型与决策支持报告.html" class="sub-menu-link">成本分摊模型与决策支持报告</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/应收账管理.html" class="sub-menu-link">应收账款管理</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/实时经营数据采集与风险管控.html" class="sub-menu-link">实时经营数据采集与风险管控</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/销售与采购合同全周期管理流程.html" class="sub-menu-link">销售与采购合同全周期管理流程</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/合同执行进销表管理解决方案.html" class="sub-menu-link">合同执行进销表工作流程图</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/二层子网页/技术支持.html" class="nav-link">技术支持</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/安装与调试.html" class="sub-menu-link">安装与调试</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/工艺参数调试核心目标.html" class="sub-menu-link">工艺参数调试与环境评估</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/在线支持与安装指导视频平台.html" class="sub-menu-link">在线支持与安装指导视频</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/工艺参数智能优化方案.html" class="sub-menu-link">产品工艺参数优化建议</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/维护与诊断.html" class="sub-menu-link">维护与诊断</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/智能远程协同诊断方案.html" class="sub-menu-link">故障远程智能协同诊断</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/产品全周期维护计划.html" class="sub-menu-link">产品全周期维护计划</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/应急故障代码库.html" class="sub-menu-link">应急故障代码库</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="file:///D:/AI开发软件/小吴/二层子网页/售后服务.html" class="nav-link">售后服务</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/服务与承诺.html" class="sub-menu-link">服务承诺与响应</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/年度设备保养套餐定制化方案.html" class="sub-menu-link">年度保养套餐定制化选项</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/紧急响应.html" class="sub-menu-link">紧急响应SOP</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/备件库存管理解决方案.html" class="sub-menu-link">备件库存管理</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/设备退役残值评估与回收服务方案.html" class="sub-menu-link">设备退役残值评估与回收服务</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="file:///D:/AI开发软件/小吴/二层子网页/客户培训与回访.html" class="sub-menu-link">客户培训与回访</a>
+                            <ul class="sub-sub-menu">
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/操作人员技能认证方案.html" class="sub-menu-link">操作人员技能认证</a></li>
+                                <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/客户满意度回访方案.html" class="sub-menu-link">客户满意度回访</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">数据分析与洞察</a>
+                    <ul class="dropdown-menu">
+                        <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页//数据整合.html" class="sub-menu-link">整合销售、采购、产品、财务等数据</a></li>
+                        <li class="sub-menu-item"><a href="file:///D:/AI开发软件/小吴/子网页网页/行业趋势与业务优化.html">提供行业趋势分析与业务优化建议</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 主要内容区 -->
+    <div class="main-content">
+        <div class="container">
+            <h1 style="color: var(--dark-green); margin-bottom: 20px;">欢迎使用康迈乐烟草行业信息管理系统</h1>
+            <p style="margin-bottom: 30px;">康迈乐烟草行业信息管理系统是一套专为烟草行业打造的全流程信息管理解决方案，覆盖销售、采购、产品、财务、技术支持、售后服务等多个领域，提供全面、高效、智能的行业数字化转型支持。</p>
+            
+            <div class="dashboard">
+                <div class="dashboard-card">
+                    <h3 class="card-header">销售管理</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>客户档案标准化采集</li>
+                            <li>客户需求动态更新</li>
+                            <li>客户分级与差异化服务</li>
+                            <li>客户关系实时动态评估</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-header">采购运营</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>供应商准入与审核</li>
+                            <li>动态考核与熔断机制</li>
+                            <li>数据共享平台对接</li>
+                            <li>ESG供应商筛查</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-header">产品中心</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>产品对比与选型工具</li>
+                            <li>技术参数与工艺适配</li>
+                            <li>定制化产品咨询与设计</li>
+                            <li>模块化改造案例</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-header">财务管控</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>全生命周期成本核算</li>
+                            <li>账期管理与预警机制</li>
+                            <li>成本分摊模型</li>
+                            <li>合同全周期管理</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-header">技术支持</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>工艺参数调试与环境评估</li>
+                            <li>在线支持与安装指导</li>
+                            <li>故障远程智能协同诊断</li>
+                            <li>产品全周期维护计划</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 class="card-header">售后服务</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>年度保养套餐定制</li>
+                            <li>紧急响应SOP</li>
+                            <li>备件库存管理</li>
+                            <li>客户满意度回访</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card" style="margin-top: 20px;">
+                <h3 class="card-header">数据分析与洞察</h3>
+                <div class="card-content">
+                    <p>作为系统新增模块，数据分析与洞察整合了销售、采购、产品、财务等多维度数据，提供行业趋势分析与业务优化建议，助力企业实现数据驱动的精细化运营与决策。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>关于我们</h3>
+                <ul>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/公司简介.html">公司简介</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/公司发展历程.html">发展历程</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/联系方式.html#">联系方式</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>解决方案</h3>
+                <ul>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/烟草行业解决方案.html">烟草行业解决方案</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/数字化转型案例.html">数字化转型案例</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/技术白皮书.html">技术白皮书</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>支持与服务</h3>
+                <ul>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/技术支持.html">技术支持</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/服务条款.html">服务条款</a></li>
+                    <li><a href="file:///D:/AI开发软件/小吴/子网页网页/常见问题.html">常见问题</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container copyright">
+            <p>&copy; 2025 康迈乐科技有限公司 版权所有</p>
+        </div>
+    </footer>
+</body>
+</html>
